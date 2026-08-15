@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+    Connect IQ application manifest.
+    You can edit this file with the "Monkey C: Edit Application", "Monkey C: Set Products by Version",
+    "Monkey C: Edit Products", "Monkey C: Edit Permissions" and "Monkey C: Edit Languages" commands
+    from the Visual Studio Code command palette instead of hand-editing it.
+-->
+<iq:manifest version="3" xmlns:iq="http://www.garmin.com/xml/connectiq">
+    <iq:application
+        entry="RollerSkiTrackerApp"
+        id="3CE669BB67B749F6BF81C638BD3879E0"
+        launcherIcon="@Drawables.LauncherIcon"
+        minSdkVersion="4.2.0"
+        name="@Strings.AppName"
+        type="watchApp">
+        <iq:products>
+            <iq:product id="fr265"/>
+            <iq:product id="fr265s"/>
+        </iq:products>
+        <iq:permissions>
+            <!-- Required to record GPS-based activities (speed, distance, position). -->
+            <iq:uses-permission id="Positioning"/>
+        </iq:permissions>
+        <iq:languages>
+            <iq:language>eng</iq:language>
+        </iq:languages>
+        <iq:barrels/>
+    </iq:application>
+</iq:manifest>

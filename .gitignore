@@ -1,0 +1,17 @@
+# Connect IQ build output
+bin/
+gen/
+*.prg
+*.prg.debug.xml
+*.iq
+
+# Developer signing key - NEVER commit this, it is your app's identity
+*.der
+*.pem
+
+# VS Code workspace settings can contain machine-specific SDK/key paths
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
