@@ -2,6 +2,7 @@ import Toybox.Application;
 import Toybox.Application.Properties;
 import Toybox.ActivityRecording;
 import Toybox.Activity;
+import Toybox.System;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
@@ -25,6 +26,9 @@ class RollerSkiTrackerApp extends Application.AppBase {
     private var _sessionStarted as Boolean;
     private var _skiType as Number;
     private var _intervalController as IntervalController?;
+    private var _strokeDetector as StrokeDetector?;
+    private var _strokeStats as StrokeStats?;
+    private var _fitFieldWriter as FitFieldWriter?;
 
     function initialize() {
         AppBase.initialize();
@@ -67,8 +71,16 @@ class RollerSkiTrackerApp extends Application.AppBase {
         _session.start();
         _sessionStarted = true;
 
+        // Stroke detection starts reading the just-chosen skiType property
+        // immediately, so it picks up the right axis/threshold from the
+        // first sample.
+        _strokeStats = new StrokeStats();
+        _strokeDetector = new StrokeDetector();
+        _fitFieldWriter = new FitFieldWriter(_session);
+
         if (intervalPlan != null) {
             _intervalController = new IntervalController(intervalPlan);
+            _intervalController.setLapCallback(method(:onIntervalLap));
         }
     }
 
@@ -101,6 +113,51 @@ class RollerSkiTrackerApp extends Application.AppBase {
             return null;
         }
         return _intervalController.getStatusText(info.timerTime / 1000);
+    }
+
+    // Called from IntervalController on each interval phase transition, so
+    // per-lap stroke stats roll over in step with the interval structure.
+    function onIntervalLap() as Void {
+        if (_strokeStats == null) {
+            return;
+        }
+        var info = Activity.getActivityInfo();
+        var elapsedDistanceM = (info != null) ? info.elapsedDistance : null;
+        _strokeStats.onLapTurn(elapsedDistanceM);
+        if (_fitFieldWriter != null) {
+            _fitFieldWriter.onLapTurn(_strokeStats);
+        }
+    }
+
+    // Polls the accelerometer-based stroke detector and updates stroke
+    // stats / custom FIT fields. Call once per second while recording.
+    // No-op for a session that hasn't started yet.
+    function tickStrokes() as Void {
+        if (_strokeDetector == null || _strokeStats == null || _session == null) {
+            return;
+        }
+
+        var nowMs = System.getTimer();
+        var count = _strokeDetector.getAndResetStrokeCount();
+        _strokeStats.recordStrokes(count, nowMs);
+
+        var info = Activity.getActivityInfo();
+        var elapsedDistanceM = (info != null) ? info.elapsedDistance : null;
+        _strokeStats.updateDistance(elapsedDistanceM);
+
+        if (_fitFieldWriter != null) {
+            _fitFieldWriter.update(_strokeStats);
+        }
+    }
+
+    // Current (rolling-average) stroke rate in strokes/min, for display.
+    function getCurrentStrokeRateSpm() as Float {
+        return (_strokeStats != null) ? _strokeStats.getCurrentRateSpm() : 0.0;
+    }
+
+    // Session distance per stroke in meters, for display.
+    function getSessionDistancePerStroke() as Float {
+        return (_strokeStats != null) ? _strokeStats.getSessionDistancePerStroke() : 0.0;
     }
 
     function getSkiTypeLabel() as String {

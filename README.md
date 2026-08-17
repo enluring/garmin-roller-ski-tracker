@@ -22,8 +22,10 @@ manifest.xml            Application manifest (id, target devices, permissions)
 monkey.jungle           Build configuration (source/resource sets per device)
 source/                 Monkey C source files
 resources/
-  strings/              Localized strings
+  strings/               Localized strings
   drawables/             Icons and images
+  properties/            Application.Properties definitions/defaults (skiType, stroke thresholds/axes)
+  settings/              Phone-app settings screen (stroke threshold/axis calibration)
 ```
 
 ## Prerequisites
@@ -57,16 +59,31 @@ On launch, walks through an on-watch setup flow before recording starts:
    of rounds, work minutes and rest minutes via number pickers (mirrors the
    built-in Run app's on-device interval setup).
 
-Once configured, records a generic (`Toybox.ActivityRecording`) session.
+Once configured, records a generic (`Toybox.ActivityRecording`) session and
+starts accelerometer-based stroke detection (`StrokeDetector`, 25 Hz,
+threshold peak detection with a 300ms refractory debounce). The data screen
+is a 2-column grid: time/distance, pace/heart rate, and stroke
+rate/distance-per-stroke (`StrokeStats`), with custom FIT fields for all of
+it written via `FitFieldWriter` (`Toybox.FitContributor`) so they show up
+in Garmin Connect after sync. The peak-detection axis and threshold used
+per ski type are **not hardcoded** - they're `Application.Properties`
+(`resources/properties/properties.xml`), editable from the Connect IQ phone
+app (`resources/settings/settings.xml`) without rebuilding; the shipped
+defaults are unvalidated placeholders pending field calibration.
+
 For an interval session, `IntervalController` derives the current work/rest
 phase from elapsed active time each second, shows it on the data screen
-("WORK 2/4  01:23"), marks a FIT lap and vibrates on every phase change,
-and switches to "INTERVAL DONE" once all rounds are complete (recording
-continues as a normal free session after that). The data screen otherwise
-shows elapsed time, distance, pace and heart rate. SELECT pauses/resumes
-recording; BACK stops, saves and exits.
+("WORK 2/4  01:23"), marks a FIT lap (rolling over per-lap stroke stats too)
+and vibrates on every phase change, and switches to "INTERVAL DONE" once all
+rounds are complete (recording continues as a normal free session after
+that). SELECT pauses/resumes recording; BACK stops, saves and exits.
 
-Roller-ski specific technique metrics (stroke rate, distance/stroke) are
-not part of this app - see the separate `RollerskiTracker/` Connect IQ data
-field project for those (it has its own, phone-settings-based `skiType`
-property; the two apps do not share properties).
+There is also a separate `RollerskiTracker/` Connect IQ **data field**
+project in this repo, with its own copy of the stroke-detection logic and
+its own `skiType` property (phone-settings only, no on-watch picker). It
+exists so the stroke metrics can be added as a field inside Garmin's
+built-in activity apps (Run, Bike, etc.) - something a standalone watchApp
+like this one cannot host. The two projects have separate app IDs and do
+not share properties or code; keeping their calibration values in sync
+(and picking the app to launch based on whether you want interval
+setup/HR/pace vs. embedding into a built-in app) is a manual step.

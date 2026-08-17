@@ -4,10 +4,12 @@ import Toybox.WatchUi;
 import Toybox.Activity;
 import Toybox.Timer;
 
-// Main data screen: elapsed session time, distance, pace and heart rate.
-// Refreshed once a second by a Timer while the view is shown, reading the
-// live values from Activity.getActivityInfo() (fed by the ActivityRecording
-// session RollerSkiTrackerApp starts once a ski type is picked).
+// Main data screen: elapsed session time, distance, pace, heart rate,
+// stroke rate and distance/stroke, laid out as a 2-column grid. Refreshed
+// once a second by a Timer while the view is shown, reading the live
+// values from Activity.getActivityInfo() and RollerSkiTrackerApp's stroke
+// tracking (fed by the ActivityRecording session started once a ski type
+// is picked).
 //
 // The first time this view is shown, it puts up a ski-type picker
 // (SkiTypePickerDelegate) on top of itself; RollerSkiTrackerApp.beginSession
@@ -42,6 +44,7 @@ class RollerSkiTrackerView extends WatchUi.View {
 
     function onUpdateTimer() as Void {
         getApp().tickInterval();
+        getApp().tickStrokes();
         WatchUi.requestUpdate();
     }
 
@@ -53,6 +56,8 @@ class RollerSkiTrackerView extends WatchUi.View {
 
         var width = dc.getWidth();
         var height = dc.getHeight();
+        var leftX = width * 0.27;
+        var rightX = width * 0.73;
 
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, height * 0.06, Graphics.FONT_XTINY, getApp().getSkiTypeLabel(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
@@ -61,10 +66,14 @@ class RollerSkiTrackerView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, height * 0.16, Graphics.FONT_XTINY, (intervalStatus != null) ? intervalStatus : "", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
-        drawStat(dc, width / 2, height * 0.24, "TIME", formatElapsedTime(info));
-        drawStat(dc, width / 2, height * 0.46, "DISTANCE", formatDistance(info));
-        drawStat(dc, width / 2, height * 0.68, "PACE", formatPace(info));
-        drawStat(dc, width / 2, height * 0.90, "HEART RATE", formatHeartRate(info));
+        drawStat(dc, leftX, height * 0.34, "TIME", formatElapsedTime(info));
+        drawStat(dc, rightX, height * 0.34, "DISTANCE", formatDistance(info));
+
+        drawStat(dc, leftX, height * 0.60, "PACE", formatPace(info));
+        drawStat(dc, rightX, height * 0.60, "HEART RATE", formatHeartRate(info));
+
+        drawStat(dc, leftX, height * 0.86, "STROKE RATE", formatStrokeRate(getApp().getCurrentStrokeRateSpm()));
+        drawStat(dc, rightX, height * 0.86, "DIST/STROKE", formatDistPerStroke(getApp().getSessionDistancePerStroke()));
     }
 
     function onHide() as Void {
@@ -125,6 +134,14 @@ class RollerSkiTrackerView extends WatchUi.View {
             return "-- bpm";
         }
         return info.currentHeartRate.format("%d") + " bpm";
+    }
+
+    private function formatStrokeRate(spm as Float) as String {
+        return spm.format("%.0f") + " spm";
+    }
+
+    private function formatDistPerStroke(meters as Float) as String {
+        return meters.format("%.1f") + " m";
     }
 
 }

@@ -20,6 +20,10 @@
         <iq:permissions>
             <!-- Required to record GPS-based activities (speed, distance, position). -->
             <iq:uses-permission id="Positioning"/>
+            <!-- Accelerometer sampling for stroke (pole-plant) detection. -->
+            <iq:uses-permission id="Sensor"/>
+            <!-- Custom FIT fields (stroke rate, lap stroke count, distance/stroke). -->
+            <iq:uses-permission id="FitContributor"/>
         </iq:permissions>
         <iq:languages>
             <iq:language>eng</iq:language>

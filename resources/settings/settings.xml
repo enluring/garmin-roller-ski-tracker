@@ -1,0 +1,37 @@
+<!--
+    Stroke-detection calibration, editable from the Connect IQ mobile app /
+    Garmin Express (Device > Roller Ski Tracker > App Settings) so the
+    unvalidated placeholder defaults in resources/properties/properties.xml
+    can be tuned from field data without rebuilding. skiType itself is
+    chosen on-watch (see SkiTypePickerDelegate.mc), not here.
+-->
+<settings>
+    <setting propertyKey="@Properties.thresholdClassic" title="@Strings.SettingThresholdClassicTitle">
+        <settingConfig type="numeric" minimum="0" maximum="4000"/>
+    </setting>
+    <setting propertyKey="@Properties.thresholdSkate" title="@Strings.SettingThresholdSkateTitle">
+        <settingConfig type="numeric" minimum="0" maximum="4000"/>
+    </setting>
+    <setting propertyKey="@Properties.thresholdDoublePoling" title="@Strings.SettingThresholdDoublePolingTitle">
+        <settingConfig type="numeric" minimum="0" maximum="4000"/>
+    </setting>
+
+    <setting propertyKey="@Properties.axisClassic" title="@Strings.SettingAxisClassicTitle">
+        <settingConfig type="list">
+            <listEntryLabels>@Strings.AxisX,@Strings.AxisY,@Strings.AxisZ</listEntryLabels>
+            <listEntryValues>0,1,2</listEntryValues>
+        </settingConfig>
+    </setting>
+    <setting propertyKey="@Properties.axisSkate" title="@Strings.SettingAxisSkateTitle">
+        <settingConfig type="list">
+            <listEntryLabels>@Strings.AxisX,@Strings.AxisY,@Strings.AxisZ</listEntryLabels>
+            <listEntryValues>0,1,2</listEntryValues>
+        </settingConfig>
+    </setting>
+    <setting propertyKey="@Properties.axisDoublePoling" title="@Strings.SettingAxisDoublePolingTitle">
+        <settingConfig type="list">
+            <listEntryLabels>@Strings.AxisX,@Strings.AxisY,@Strings.AxisZ</listEntryLabels>
+            <listEntryValues>0,1,2</listEntryValues>
+        </settingConfig>
+    </setting>
+</settings>

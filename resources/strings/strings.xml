@@ -1,3 +1,15 @@
 <strings>
     <string id="AppName">Roller Ski Tracker</string>
+
+    <!-- Stroke-detection calibration (Connect IQ phone app settings) -->
+    <string id="SettingThresholdClassicTitle">Peak threshold - classic (mg)</string>
+    <string id="SettingThresholdSkateTitle">Peak threshold - skate (mg)</string>
+    <string id="SettingThresholdDoublePolingTitle">Peak threshold - double poling (mg)</string>
+
+    <string id="SettingAxisClassicTitle">Accelerometer axis - classic</string>
+    <string id="SettingAxisSkateTitle">Accelerometer axis - skate</string>
+    <string id="SettingAxisDoublePolingTitle">Accelerometer axis - double poling</string>
+    <string id="AxisX">X</string>
+    <string id="AxisY">Y</string>
+    <string id="AxisZ">Z</string>
 </strings>

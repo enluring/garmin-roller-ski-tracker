@@ -18,11 +18,20 @@ class IntervalController {
     private var _plan as IntervalPlan;
     private var _lastPhase as Number;
     private var _lastRound as Number;
+    private var _lapCallback as Method?;
 
     function initialize(plan as IntervalPlan) {
         _plan = plan;
         _lastPhase = -1;
         _lastRound = -1;
+        _lapCallback = null;
+    }
+
+    // Optional callback invoked (with no arguments) every time a lap is
+    // marked on a phase transition - e.g. to also roll over per-lap stroke
+    // stats in step with the interval structure.
+    function setLapCallback(callback as Method) as Void {
+        _lapCallback = callback;
     }
 
     // Call once per second (while a session is recording) with the
@@ -43,6 +52,9 @@ class IntervalController {
         // already starts at the session's own start, no separate lap needed.
         if (_lastPhase != -1 && session != null && session.isRecording()) {
             session.addLap();
+            if (_lapCallback != null) {
+                _lapCallback.invoke();
+            }
         }
 
         if (Attention has :vibrate) {
