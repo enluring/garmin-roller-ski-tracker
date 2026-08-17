@@ -1,0 +1,46 @@
+<!--
+    Default (large) layout: used when the field is given a big drawing area,
+    e.g. placed as a full-screen 1-field data screen. Coordinates are
+    expressed as fractions of the field's actual dc size so the same layout
+    scales across devices/screen shapes. See layout_small.xml for the
+    compact variant used in tighter 2/3/4-field layouts (selected at
+    runtime in RollerskiView.onLayout()).
+-->
+<layout id="MainLayoutLarge">
+    <label
+        id="RateLabel"
+        x="dc.getWidth() / 2"
+        y="dc.getHeight() * 0.16"
+        font="Graphics.FONT_XTINY"
+        justification="Graphics.TEXT_JUSTIFY_CENTER"
+        color="Graphics.COLOR_LT_GRAY">
+        @Strings.RateLabel
+    </label>
+    <label
+        id="RateValue"
+        x="dc.getWidth() / 2"
+        y="dc.getHeight() * 0.46"
+        font="Graphics.FONT_NUMBER_THAI_HOT"
+        justification="Graphics.TEXT_JUSTIFY_CENTER"
+        color="Graphics.COLOR_WHITE">
+        --
+    </label>
+    <label
+        id="DistanceValue"
+        x="dc.getWidth() * 0.27"
+        y="dc.getHeight() * 0.86"
+        font="Graphics.FONT_SMALL"
+        justification="Graphics.TEXT_JUSTIFY_CENTER"
+        color="Graphics.COLOR_WHITE">
+        --
+    </label>
+    <label
+        id="DistPerStrokeValue"
+        x="dc.getWidth() * 0.73"
+        y="dc.getHeight() * 0.86"
+        font="Graphics.FONT_SMALL"
+        justification="Graphics.TEXT_JUSTIFY_CENTER"
+        color="Graphics.COLOR_WHITE">
+        --
+    </label>
+</layout>

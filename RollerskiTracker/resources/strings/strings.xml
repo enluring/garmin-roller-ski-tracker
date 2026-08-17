@@ -1,0 +1,23 @@
+<strings>
+    <string id="AppName">RollerskiTracker</string>
+
+    <!-- Settings screen (Connect IQ mobile app / Garmin Express) -->
+    <string id="SettingSkiTypeTitle">Ski type</string>
+    <string id="SkiTypeClassic">Classic</string>
+    <string id="SkiTypeSkate">Skate</string>
+    <string id="SkiTypeDoublePoling">Double poling</string>
+
+    <string id="SettingThresholdClassicTitle">Peak threshold - classic (mg)</string>
+    <string id="SettingThresholdSkateTitle">Peak threshold - skate (mg)</string>
+    <string id="SettingThresholdDoublePolingTitle">Peak threshold - double poling (mg)</string>
+
+    <string id="SettingAxisClassicTitle">Accelerometer axis - classic</string>
+    <string id="SettingAxisSkateTitle">Accelerometer axis - skate</string>
+    <string id="SettingAxisDoublePolingTitle">Accelerometer axis - double poling</string>
+    <string id="AxisX">X</string>
+    <string id="AxisY">Y</string>
+    <string id="AxisZ">Z</string>
+
+    <!-- On-field labels -->
+    <string id="RateLabel">STROKE RATE</string>
+</strings>

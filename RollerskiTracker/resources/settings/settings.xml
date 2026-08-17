@@ -1,0 +1,42 @@
+<!--
+    User-facing settings screen shown in the Connect IQ mobile app / Garmin
+    Express for this data field. Values are stored as the properties defined
+    in resources/properties/properties.xml.
+-->
+<settings>
+    <setting propertyKey="@Properties.skiType" title="@Strings.SettingSkiTypeTitle">
+        <settingConfig type="list">
+            <listEntryLabels>@Strings.SkiTypeClassic,@Strings.SkiTypeSkate,@Strings.SkiTypeDoublePoling</listEntryLabels>
+            <listEntryValues>0,1,2</listEntryValues>
+        </settingConfig>
+    </setting>
+
+    <setting propertyKey="@Properties.thresholdClassic" title="@Strings.SettingThresholdClassicTitle">
+        <settingConfig type="numeric" minimum="0" maximum="4000"/>
+    </setting>
+    <setting propertyKey="@Properties.thresholdSkate" title="@Strings.SettingThresholdSkateTitle">
+        <settingConfig type="numeric" minimum="0" maximum="4000"/>
+    </setting>
+    <setting propertyKey="@Properties.thresholdDoublePoling" title="@Strings.SettingThresholdDoublePolingTitle">
+        <settingConfig type="numeric" minimum="0" maximum="4000"/>
+    </setting>
+
+    <setting propertyKey="@Properties.axisClassic" title="@Strings.SettingAxisClassicTitle">
+        <settingConfig type="list">
+            <listEntryLabels>@Strings.AxisX,@Strings.AxisY,@Strings.AxisZ</listEntryLabels>
+            <listEntryValues>0,1,2</listEntryValues>
+        </settingConfig>
+    </setting>
+    <setting propertyKey="@Properties.axisSkate" title="@Strings.SettingAxisSkateTitle">
+        <settingConfig type="list">
+            <listEntryLabels>@Strings.AxisX,@Strings.AxisY,@Strings.AxisZ</listEntryLabels>
+            <listEntryValues>0,1,2</listEntryValues>
+        </settingConfig>
+    </setting>
+    <setting propertyKey="@Properties.axisDoublePoling" title="@Strings.SettingAxisDoublePolingTitle">
+        <settingConfig type="list">
+            <listEntryLabels>@Strings.AxisX,@Strings.AxisY,@Strings.AxisZ</listEntryLabels>
+            <listEntryValues>0,1,2</listEntryValues>
+        </settingConfig>
+    </setting>
+</settings>

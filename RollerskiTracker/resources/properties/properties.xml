@@ -1,0 +1,23 @@
+<!--
+    App properties (persisted values) backing resources/settings/settings.xml.
+
+    skiType selects which threshold/axis pair StrokeDetector uses.
+
+    thresholdClassic / thresholdSkate / thresholdDoublePoling and
+    axisClassic / axisSkate / axisDoublePoling are UNVALIDATED placeholder
+    starting points, not measured values - see StrokeDetector.mc. They are
+    exposed here (rather than hardcoded) so they can be recalibrated from
+    the Connect IQ phone app after collecting real field data, without
+    rebuilding the app. Axis: 0 = X, 1 = Y, 2 = Z.
+-->
+<properties>
+    <property id="skiType" type="number">0</property>
+
+    <property id="thresholdClassic" type="number">1200</property>
+    <property id="thresholdSkate" type="number">1000</property>
+    <property id="thresholdDoublePoling" type="number">1400</property>
+
+    <property id="axisClassic" type="number">2</property>
+    <property id="axisSkate" type="number">1</property>
+    <property id="axisDoublePoling" type="number">2</property>
+</properties>
