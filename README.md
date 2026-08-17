@@ -49,9 +49,12 @@ resources/
 
 ## Status
 
-Records a generic (`Toybox.ActivityRecording`) session, started on launch
-and stopped/saved on exit, with a single data screen showing elapsed time,
-distance, pace and heart rate. SELECT pauses/resumes recording; BACK stops,
-saves and exits. Roller-ski specific technique metrics (stroke rate,
-distance/stroke) are not part of this app - see the separate
-`RollerskiTracker/` Connect IQ data field project for those.
+On launch, shows an on-watch picker (classic / skate / double poling)
+before recording starts; the choice is stored as the `skiType` property and
+shown at the top of the data screen. Once picked, records a generic
+(`Toybox.ActivityRecording`) session and shows elapsed time, distance, pace
+and heart rate. SELECT pauses/resumes recording; BACK stops, saves and
+exits. Roller-ski specific technique metrics (stroke rate, distance/stroke)
+are not part of this app - see the separate `RollerskiTracker/` Connect IQ
+data field project for those (it has its own, phone-settings-based
+`skiType` property; the two apps do not share properties).

@@ -7,7 +7,11 @@ import Toybox.Timer;
 // Main data screen: elapsed session time, distance, pace and heart rate.
 // Refreshed once a second by a Timer while the view is shown, reading the
 // live values from Activity.getActivityInfo() (fed by the ActivityRecording
-// session RollerSkiTrackerApp starts on launch).
+// session RollerSkiTrackerApp starts once a ski type is picked).
+//
+// The first time this view is shown, it puts up a ski-type picker
+// (SkiTypePickerDelegate) on top of itself; RollerSkiTrackerApp.beginSession
+// only starts the recording session once a choice has been made.
 class RollerSkiTrackerView extends WatchUi.View {
 
     private var _updateTimer as Timer.Timer?;
@@ -22,6 +26,18 @@ class RollerSkiTrackerView extends WatchUi.View {
     function onShow() as Void {
         _updateTimer = new Timer.Timer();
         _updateTimer.start(method(:onUpdateTimer), 1000, true);
+
+        if (!getApp().isSessionStarted()) {
+            showSkiTypePicker();
+        }
+    }
+
+    private function showSkiTypePicker() as Void {
+        var menu = new WatchUi.Menu2({:title => "Ski type"});
+        menu.addItem(new WatchUi.MenuItem("Classic", null, :classic, null));
+        menu.addItem(new WatchUi.MenuItem("Skate", null, :skate, null));
+        menu.addItem(new WatchUi.MenuItem("Double poling", null, :doublePoling, null));
+        WatchUi.pushView(menu, new SkiTypePickerDelegate(), WatchUi.SLIDE_UP);
     }
 
     function onUpdateTimer() as Void {
@@ -37,10 +53,13 @@ class RollerSkiTrackerView extends WatchUi.View {
         var width = dc.getWidth();
         var height = dc.getHeight();
 
-        drawStat(dc, width / 2, height * 0.16, "TIME", formatElapsedTime(info));
-        drawStat(dc, width / 2, height * 0.40, "DISTANCE", formatDistance(info));
-        drawStat(dc, width / 2, height * 0.64, "PACE", formatPace(info));
-        drawStat(dc, width / 2, height * 0.88, "HEART RATE", formatHeartRate(info));
+        dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(width / 2, height * 0.06, Graphics.FONT_XTINY, getApp().getSkiTypeLabel(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+
+        drawStat(dc, width / 2, height * 0.24, "TIME", formatElapsedTime(info));
+        drawStat(dc, width / 2, height * 0.46, "DISTANCE", formatDistance(info));
+        drawStat(dc, width / 2, height * 0.68, "PACE", formatPace(info));
+        drawStat(dc, width / 2, height * 0.90, "HEART RATE", formatHeartRate(info));
     }
 
     function onHide() as Void {

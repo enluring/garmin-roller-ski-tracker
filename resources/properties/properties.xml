@@ -1,0 +1,10 @@
+<!--
+    skiType is set on-watch via the picker shown at the start of a session
+    (see SkiTypePickerDelegate.mc), not from a phone settings screen. It's
+    declared here so Application.Properties.setValue()/getValue() has a
+    typed, defaulted backing store. 0 = classic, 1 = skate, 2 = double
+    poling (see the SkiType module in RollerSkiTrackerApp.mc).
+-->
+<properties>
+    <property id="skiType" type="number">0</property>
+</properties>
