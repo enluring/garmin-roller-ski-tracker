@@ -49,6 +49,9 @@ resources/
 
 ## Status
 
-Early scaffolding: the app currently shows a placeholder screen. Activity
-recording (`Toybox.ActivityRecording`) and roller-ski specific data screens
-are not implemented yet.
+Records a generic (`Toybox.ActivityRecording`) session, started on launch
+and stopped/saved on exit, with a single data screen showing elapsed time,
+distance, pace and heart rate. SELECT pauses/resumes recording; BACK stops,
+saves and exits. Roller-ski specific technique metrics (stroke rate,
+distance/stroke) are not part of this app - see the separate
+`RollerskiTracker/` Connect IQ data field project for those.
