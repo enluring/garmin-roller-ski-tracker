@@ -2,9 +2,9 @@ import Toybox.Lang;
 import Toybox.WatchUi;
 
 // Handles the ski-type picker shown once, the first time
-// RollerSkiTrackerView appears. Selecting an item stores the choice and
-// starts the recording session (RollerSkiTrackerApp.beginSession), then
-// dismisses the picker to reveal the main view underneath.
+// RollerSkiTrackerView appears. Selecting an item replaces this menu with
+// the session-type picker (SessionTypePickerDelegate, in
+// IntervalSetup.mc), carrying the chosen ski type forward.
 class SkiTypePickerDelegate extends WatchUi.Menu2InputDelegate {
 
     function initialize() {
@@ -21,8 +21,8 @@ class SkiTypePickerDelegate extends WatchUi.Menu2InputDelegate {
             skiType = SkiType.DOUBLE_POLING;
         }
 
-        getApp().beginSession(skiType);
-        WatchUi.popView(WatchUi.SLIDE_DOWN);
+        WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
+        pushSessionTypePicker(skiType);
     }
 
 }

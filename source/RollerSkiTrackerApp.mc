@@ -1,6 +1,7 @@
 import Toybox.Application;
 import Toybox.Application.Properties;
 import Toybox.ActivityRecording;
+import Toybox.Activity;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
@@ -23,6 +24,7 @@ class RollerSkiTrackerApp extends Application.AppBase {
     private var _sessionSaved as Boolean;
     private var _sessionStarted as Boolean;
     private var _skiType as Number;
+    private var _intervalController as IntervalController?;
 
     function initialize() {
         AppBase.initialize();
@@ -42,10 +44,12 @@ class RollerSkiTrackerApp extends Application.AppBase {
         return [new RollerSkiTrackerView(), new RollerSkiTrackerDelegate(self)];
     }
 
-    // Called once, from the ski-type picker shown the first time the main
-    // view is shown. Persists the choice and starts the recording session.
-    // No-op if a session is already running.
-    function beginSession(skiType as Number) as Void {
+    // Called once, from the end of the ski-type/session-type/interval-setup
+    // picker flow shown the first time the main view is shown. Persists the
+    // ski type and starts the recording session; `intervalPlan` is null for
+    // a free session, or a configured work/rest structure. No-op if a
+    // session is already running.
+    function beginSession(skiType as Number, intervalPlan as IntervalPlan?) as Void {
         if (_sessionStarted) {
             return;
         }
@@ -62,10 +66,41 @@ class RollerSkiTrackerApp extends Application.AppBase {
         });
         _session.start();
         _sessionStarted = true;
+
+        if (intervalPlan != null) {
+            _intervalController = new IntervalController(intervalPlan);
+        }
     }
 
     function isSessionStarted() as Boolean {
         return _sessionStarted;
+    }
+
+    // Advances interval-phase tracking (lap marks + vibration cues) by one
+    // tick. No-op for a free session, or before recording has started.
+    function tickInterval() as Void {
+        if (_intervalController == null || _session == null) {
+            return;
+        }
+        var info = Activity.getActivityInfo();
+        if (info == null || info.timerTime == null) {
+            return;
+        }
+        _intervalController.tick(info.timerTime / 1000, _session);
+    }
+
+    // One-line interval status for the data screen ("WORK 2/4  01:23",
+    // "INTERVAL DONE"), or null for a free session / before recording has
+    // started.
+    function getIntervalStatusText() as String? {
+        if (_intervalController == null) {
+            return null;
+        }
+        var info = Activity.getActivityInfo();
+        if (info == null || info.timerTime == null) {
+            return null;
+        }
+        return _intervalController.getStatusText(info.timerTime / 1000);
     }
 
     function getSkiTypeLabel() as String {

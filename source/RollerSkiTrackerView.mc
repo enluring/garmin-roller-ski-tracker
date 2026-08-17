@@ -41,6 +41,7 @@ class RollerSkiTrackerView extends WatchUi.View {
     }
 
     function onUpdateTimer() as Void {
+        getApp().tickInterval();
         WatchUi.requestUpdate();
     }
 
@@ -55,6 +56,10 @@ class RollerSkiTrackerView extends WatchUi.View {
 
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(width / 2, height * 0.06, Graphics.FONT_XTINY, getApp().getSkiTypeLabel(), Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
+
+        var intervalStatus = getApp().getIntervalStatusText();
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+        dc.drawText(width / 2, height * 0.16, Graphics.FONT_XTINY, (intervalStatus != null) ? intervalStatus : "", Graphics.TEXT_JUSTIFY_CENTER | Graphics.TEXT_JUSTIFY_VCENTER);
 
         drawStat(dc, width / 2, height * 0.24, "TIME", formatElapsedTime(info));
         drawStat(dc, width / 2, height * 0.46, "DISTANCE", formatDistance(info));
