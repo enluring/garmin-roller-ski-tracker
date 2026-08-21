@@ -17,7 +17,8 @@ class RollerSkiTrackerApp extends Application.AppBase {
     }
 
     function getInitialView() as [Views] or [Views, InputDelegates] {
-        return [new RollerSkiTrackerView(), new RollerSkiTrackerDelegate()];
+        var view = new RollerSkiTrackerView();
+        return [view, new RollerSkiTrackerDelegate(view)];
     }
 
 }
